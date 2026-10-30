@@ -104,41 +104,41 @@ export default function ScrollFilmPage() {
 
   return (
     <>
-      {/* Tall scroller element - creates real scroll distance */}
-      <div ref={scrollerRef} className="relative min-h-[500vh] bg-[#070707]">
-        {/* Pinned viewport container */}
-        <div
-          ref={containerRef}
-          className="fixed inset-0 w-full h-screen bg-[#070707] overflow-hidden"
-        >
-          {/* Canvas Scrubber */}
-          <div className="absolute inset-0">
-            <FrameScrubber frameIndex={frameIndex} />
-          </div>
-
-          {/* Progress Bar */}
-          <div
-            className="absolute bottom-0 left-0 right-0 h-px bg-[#B8A27A]"
-            style={{ width: `${scrollProgress * 100}%` }}
-          />
-
-          {/* Logo */}
-          <div className="absolute top-8 left-8 pointer-events-none z-20">
-            <h1 className="font-serif text-sm tracking-widest text-[#EDEAE4] font-light">
-              MAISON VERLAINE
-            </h1>
-          </div>
-
-          {/* CTA Button */}
-          {frameIndex > 220 && (
-            <div className="absolute bottom-16 left-8 z-20">
-              <button className="px-6 py-3 border border-[#B8A27A] text-[#EDEAE4] text-sm tracking-widest hover:bg-[#B8A27A]/10 transition">
-                Ouvrir le configurateur
-              </button>
-            </div>
-          )}
+      {/* Main viewport - sticky so it stays in place during scroll */}
+      <div
+        ref={containerRef}
+        className="sticky top-0 w-full h-screen bg-[#070707] overflow-hidden"
+      >
+        {/* Canvas Scrubber */}
+        <div className="absolute inset-0">
+          <FrameScrubber frameIndex={frameIndex} />
         </div>
+
+        {/* Progress Bar */}
+        <div
+          className="absolute bottom-0 left-0 right-0 h-px bg-[#B8A27A]"
+          style={{ width: `${scrollProgress * 100}%` }}
+        />
+
+        {/* Logo */}
+        <div className="absolute top-8 left-8 pointer-events-none z-20">
+          <h1 className="font-serif text-sm tracking-widest text-[#EDEAE4] font-light">
+            MAISON VERLAINE
+          </h1>
+        </div>
+
+        {/* CTA Button */}
+        {frameIndex > 220 && (
+          <div className="absolute bottom-16 left-8 z-20">
+            <button className="px-6 py-3 border border-[#B8A27A] text-[#EDEAE4] text-sm tracking-widest hover:bg-[#B8A27A]/10 transition">
+              Ouvrir le configurateur
+            </button>
+          </div>
+        )}
       </div>
+
+      {/* Scrollable spacer - creates scroll distance */}
+      <div ref={scrollerRef} className="h-[500vh] bg-[#070707]" />
     </>
   );
 }
