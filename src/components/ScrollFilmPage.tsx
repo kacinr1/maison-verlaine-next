@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import Lenis from 'lenis';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 import FrameScrubber from './FrameScrubber';
@@ -74,26 +73,10 @@ const CHAPTERS = [
 
 export default function ScrollFilmPage() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const lenisRef = useRef<Lenis | null>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [frameIndex, setFrameIndex] = useState(0);
 
-  useEffect(() => {
-    const lenis = new Lenis();
-
-    lenisRef.current = lenis;
-
-    const raf = (time: number) => {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    };
-
-    requestAnimationFrame(raf);
-
-    return () => {
-      lenis.destroy();
-    };
-  }, []);
+  // Lenis removed - it conflicts with ScrollTrigger
 
   useEffect(() => {
     const scrubber = gsap.to(
@@ -111,7 +94,7 @@ export default function ScrollFilmPage() {
             setFrameIndex(newFrameIndex);
           },
           pin: true,
-          pinSpacing: false,
+          pinSpacing: true,  // Create extra scrollable space
         },
       }
     );
