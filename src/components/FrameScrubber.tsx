@@ -21,7 +21,7 @@ export default function FrameScrubber({ frameIndex }: FrameScrubberProps) {
       for (let i = 0; i < Math.min(30, totalFrames); i++) {
         const padded = String(i).padStart(6, '0');
         const img = new Image();
-        img.src = `/scroll-film/frame-${padded}.webp`;
+        img.src = `/scroll-film/frames-desktop/frame-${padded}.webp`;
         imagesRef.current.set(i, img);
         frames.add(i);
         await new Promise((resolve) => setTimeout(resolve, 10));
@@ -33,7 +33,7 @@ export default function FrameScrubber({ frameIndex }: FrameScrubberProps) {
       for (let i = 30; i < totalFrames; i++) {
         const padded = String(i).padStart(6, '0');
         const img = new Image();
-        img.src = `/scroll-film/frame-${padded}.webp`;
+        img.src = `/scroll-film/frames-desktop/frame-${padded}.webp`;
         imagesRef.current.set(i, img);
         frames.add(i);
         setPreloadedFrames(new Set(frames));
