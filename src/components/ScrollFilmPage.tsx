@@ -73,28 +73,26 @@ const CHAPTERS = [
 
 export default function ScrollFilmPage() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const scrollerRef = useRef<HTMLDivElement>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [frameIndex, setFrameIndex] = useState(0);
 
-  // Lenis removed - it conflicts with ScrollTrigger
-
   useEffect(() => {
+    // Create a real scrollable distance by using window as trigger
     const scrubber = gsap.to(
       {},
       {
         scrollTrigger: {
-          trigger: containerRef.current,
+          trigger: scrollerRef.current, // Tall scroller element
           start: 'top top',
-          end: 'bottom bottom',
+          end: 'bottom center',
           onUpdate: (self) => {
-            const progress = self.progress;
+            const progress = Math.min(self.progress, 1);
             setScrollProgress(progress);
-            // Map scroll progress to frame index (0-239, optimized from 960)
-            const newFrameIndex = Math.floor(progress * 240);
+            // Map scroll progress to frame index (0-239)
+            const newFrameIndex = Math.floor(progress * 239);
             setFrameIndex(newFrameIndex);
           },
-          pin: true,
-          pinSpacing: true,  // Create extra scrollable space
         },
       }
     );
@@ -105,39 +103,42 @@ export default function ScrollFilmPage() {
   }, []);
 
   return (
-    <div
-      ref={containerRef}
-      className="relative w-full h-screen bg-[#070707] overflow-hidden"
-    >
-      {/* Canvas Scrubber */}
-      <div className="absolute inset-0">
-        <FrameScrubber frameIndex={frameIndex} />
-      </div>
+    <>
+      {/* Tall scroller element - creates real scroll distance */}
+      <div ref={scrollerRef} className="relative min-h-[500vh] bg-[#070707]">
+        {/* Pinned viewport container */}
+        <div
+          ref={containerRef}
+          className="fixed inset-0 w-full h-screen bg-[#070707] overflow-hidden"
+        >
+          {/* Canvas Scrubber */}
+          <div className="absolute inset-0">
+            <FrameScrubber frameIndex={frameIndex} />
+          </div>
 
-      {/* Progress Bar */}
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-[#B8A27A]"
-           style={{ width: `${scrollProgress * 100}%` }} />
+          {/* Progress Bar */}
+          <div
+            className="absolute bottom-0 left-0 right-0 h-px bg-[#B8A27A]"
+            style={{ width: `${scrollProgress * 100}%` }}
+          />
 
-      {/* Logo */}
-      <div className="absolute top-8 left-8 pointer-events-none z-20">
-        <h1 className="font-serif text-sm tracking-widest text-[#EDEAE4] font-light">
-          MAISON VERLAINE
-        </h1>
-      </div>
+          {/* Logo */}
+          <div className="absolute top-8 left-8 pointer-events-none z-20">
+            <h1 className="font-serif text-sm tracking-widest text-[#EDEAE4] font-light">
+              MAISON VERLAINE
+            </h1>
+          </div>
 
-      {/* Text Content */}
-      <div className="absolute inset-0 pointer-events-none z-10 flex items-center justify-center">
-        {/* Text will be positioned per chapter */}
-      </div>
-
-      {/* CTA Button (on final chapter) */}
-      {frameIndex > 220 && (
-        <div className="absolute bottom-16 left-8 z-20">
-          <button className="px-6 py-3 border border-[#B8A27A] text-[#EDEAE4] text-sm tracking-widest hover:bg-[#B8A27A]/10 transition">
-            Ouvrir le configurateur
-          </button>
+          {/* CTA Button */}
+          {frameIndex > 220 && (
+            <div className="absolute bottom-16 left-8 z-20">
+              <button className="px-6 py-3 border border-[#B8A27A] text-[#EDEAE4] text-sm tracking-widest hover:bg-[#B8A27A]/10 transition">
+                Ouvrir le configurateur
+              </button>
+            </div>
+          )}
         </div>
-      )}
-    </div>
+      </div>
+    </>
   );
 }
