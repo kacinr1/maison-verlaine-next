@@ -106,8 +106,8 @@ export default function ScrollFilmPage() {
           onUpdate: (self) => {
             const progress = self.progress;
             setScrollProgress(progress);
-            // Map scroll progress to frame index (0-960)
-            const newFrameIndex = Math.floor(progress * 960);
+            // Map scroll progress to frame index (0-239, optimized from 960)
+            const newFrameIndex = Math.floor(progress * 240);
             setFrameIndex(newFrameIndex);
           },
           pin: true,
@@ -148,7 +148,7 @@ export default function ScrollFilmPage() {
       </div>
 
       {/* CTA Button (on final chapter) */}
-      {frameIndex > 900 && (
+      {frameIndex > 220 && (
         <div className="absolute bottom-16 left-8 z-20">
           <button className="px-6 py-3 border border-[#B8A27A] text-[#EDEAE4] text-sm tracking-widest hover:bg-[#B8A27A]/10 transition">
             Ouvrir le configurateur

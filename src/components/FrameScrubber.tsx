@@ -15,9 +15,10 @@ export default function FrameScrubber({ frameIndex }: FrameScrubberProps) {
   useEffect(() => {
     const preloadFrames = async () => {
       const frames = new Set<number>();
+      const totalFrames = 240; // Optimized from 960
 
       // Preload first 30 frames immediately
-      for (let i = 0; i < Math.min(30, 960); i++) {
+      for (let i = 0; i < Math.min(30, totalFrames); i++) {
         const padded = String(i).padStart(6, '0');
         const img = new Image();
         img.src = `/scroll-film/frame-${padded}.webp`;
@@ -29,7 +30,7 @@ export default function FrameScrubber({ frameIndex }: FrameScrubberProps) {
       setPreloadedFrames(frames);
 
       // Preload rest in background
-      for (let i = 30; i < 960; i++) {
+      for (let i = 30; i < totalFrames; i++) {
         const padded = String(i).padStart(6, '0');
         const img = new Image();
         img.src = `/scroll-film/frame-${padded}.webp`;
